@@ -1,27 +1,23 @@
-# An In-depth Latency Measurement Tool for Large-Scale Systems
+# LatScope: End-to-End Latency Decomposition Across the Cloud Network Stack
 
 ## Intro
-* In order to improve performance in a large-scale system, it is necessary to manage latency
-* Various latency occur at different points
-* But, There is no tool available for real-time measurement and detailed analysis of latency in a large-scale system
+* In large-scale cloud and virtualized systems, improving performance requires understanding not just total latency, but where delays actually occur across the network stack.
+* Latency can emerge at multiple layers---including socket, TCP, IP, device, and virtual interfaces---and these delays often change depending on workload behavior, network conditions, and system configuration.
+* Existing tools mainly measure RTT or single-layer metrics, making it difficult to perform real-time, practical, cross-layer latency analysis in complex environments.
+* LatScope fills this gap by using eBPF to match packets across layers and compute accurate inter-layer delays, while XDP-based time synchronization enables precise inter-server latency breakdowns.
+* With low-overhead, fine-grained latency decomposition, LatScope helps engineers detect bottlenecks, troubleshoot anomalies, and make informed tuning decisions in real deployments.
 
 ## Background
-* This is extended program about ELEMENT [ELEMENT](https://netstech.org/wp-content/uploads/2019/06/element-eurosys19.pdf, "ELEMENT LINK")
-* This use eBPF/XDP for fast network performance monitoring
-	* eBPF
-		* eBPF (extended Berkely Packet Filter) 
-		* it hepls user safely execute user-defined code within certain parts of the kernel
-		* it can be used in 10Gbps per-core
-	* XDP
-		* XDP (eXpress Data Path)
-		* it is an eBPF-based high-performane data path used to bypass most operation system networking stacks
-		* it can process almost 10Mpps
+* This project leverages eBPF and XDP to enable fast, low-overhead network performance monitoring in large-scale systems.
+* eBPF (extended Berkely Packet Filter) 
+    * A kernel technology that allows user-defined programs to run safely inside restricted parts of the operating system without modifying kernel code.
+    * It provides rich visibility into networking, system, and application events while maintaining high performance, making it suitable even for 10-Gbps-class per-core environments.
+* XDP (eXpress Data Path)
+    * A high-performance, eBPF-based packet processing framework that runs at the earliest point in the network stack, enabling packets to be handled or redirected before entering the kernel networking path.
+    * It can process traffic at multi-million packets-per-second (Mpps) rates, making it ideal for real-time latency observation and lightweight data collection.
 
 ## Architecture
-* Internel Architecture
-	* ![Internal Architecture](./img/internal.png)
-* External Architecture
-	* ![External Architecture](./img/external.png)
+![Architecture](./img/latscope_architecture.pdf)
 
 ## Requirements
 * Redis
