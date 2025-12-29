@@ -12,7 +12,7 @@
 ### eBPF (extended Berkely Packet Filter)
 * A kernel technology that allows user-defined programs to run safely inside restricted parts of the operating system without modifying kernel code.
 * It provides rich visibility into networking, system, and application events while maintaining high performance, making it suitable even for 10-Gbps-class per-core environments.
-###XDP (eXpress Data Path)###
+### XDP (eXpress Data Path)
 * A high-performance, eBPF-based packet processing framework that runs at the earliest point in the network stack, enabling packets to be handled or redirected before entering the kernel networking path.
 * It can process traffic at multi-million packets-per-second (Mpps) rates, making it ideal for real-time latency observation and lightweight data collection.
 
