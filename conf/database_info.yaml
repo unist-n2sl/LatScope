@@ -1,0 +1,4 @@
+user: mysqlusername
+passwd: mysqlpassword
+host: 10.20.0.7
+db: mysqldbname

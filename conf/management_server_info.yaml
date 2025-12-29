@@ -1,0 +1,8 @@
+address: 10.20.0.7
+port: 22
+username: yourusername
+password: yourpassword
+hostname: yourhostname
+eth: 
+    - eth0
+    - lo

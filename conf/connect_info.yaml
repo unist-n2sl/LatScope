@@ -1,0 +1,19 @@
+servers:
+    - address: 10.20.0.6
+      port: 51111
+      username: yourusername1
+      password: yourpassword1
+      hostname: yourhostname1
+      novm: 1
+      metadata_key: 1
+      eth:
+          - eth0
+    - address: 10.20.0.8
+      port: 51111
+      username: yourusername2
+      password: yourpassword2
+      hostname: yourhostname2
+      novm: 2
+      metadata_key: 2
+      eth:
+          - eth0
