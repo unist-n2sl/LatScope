@@ -3,7 +3,7 @@
 ## Intro
 * In large-scale cloud and virtualized systems, improving performance requires understanding not just total latency, but where delays actually occur across the network stack.
 * Latency can emerge at multiple layers—including socket, TCP, IP, device, and virtual interfaces—and these delays often change depending on workload behavior, network conditions, and system configuration.
-* Existing tools mainly measure RTT or single-layer metrics, making it difficult to perform real-time, practical, cross-layer latency analysis in complex environments.
+* Existing tools mainly measure RTT or single-layer metrics, making it difficult to perform cross-layer latency analysis in complex environments.
 * LatScope fills this gap by using eBPF to match packets across layers and compute accurate inter-layer delays, while XDP-based time synchronization enables precise inter-server latency breakdowns.
 * With low-overhead, fine-grained latency decomposition, LatScope helps engineers detect bottlenecks, troubleshoot anomalies, and make informed tuning decisions in real deployments.
 
@@ -14,7 +14,7 @@
 * It provides rich visibility into networking, system, and application events while maintaining high performance, making it suitable even for 10-Gbps-class per-core environments.
 ### XDP (eXpress Data Path)
 * A high-performance, eBPF-based packet processing framework that runs at the earliest point in the network stack, enabling packets to be handled or redirected before entering the kernel networking path.
-* It can process traffic at multi-million packets-per-second (Mpps) rates, making it ideal for real-time latency observation and lightweight data collection.
+* It can process traffic at multi-million packets-per-second (Mpps) rates, making it ideal for latency observation and lightweight data collection.
 
 ## Architecture
 ![Architecture](./img/latscope_architecture.jpg)
