@@ -26,6 +26,8 @@
 	* For a storage as the data collected by Observer
 * paramiko
 	* Python Package which is used for SSH connection
+* BCC (BPF Compiler Collection)
+    * A toolkit for building and running eBPF programs in user space, used to collect kernel- and network-level events
 	
 ## Code Structure
 * Metric\_Collector
@@ -134,6 +136,10 @@
 		| -------- | ------- | ------- |
 		| address | redis's address | 10.1.1.1 |
 		| port | redis's port | 5000 |
+
+## Environment
+* OS: Ubuntu 22.04.5 LTS
+* Kernel: Linux 5.14.0
 
 ## Example
 * Result Example

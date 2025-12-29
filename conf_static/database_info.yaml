@@ -1,5 +1,5 @@
-user: bw
-passwd: qhd7812
+user: username
+passwd: password
 host: 10.1.1.200
 #host: 10.20.24.73
 db: metric

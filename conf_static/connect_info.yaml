@@ -1,9 +1,9 @@
 servers:
     - address: 10.1.1.1
       port: 51111
-      username: sonic
-      password: skwx4216@!
-      hostname: node1
+      username: username
+      password: password
+      hostname: hostname
       novm: 1
       metadata_key: 1
       eth:
@@ -11,8 +11,8 @@ servers:
           - lo
     - address: 10.1.1.2
       port: 51111
-      username: sonic
-      password: skwx4216@!
+      username: username
+      password: password
       hostname: node2
       novm: 2
       metadata_key: 2
@@ -25,7 +25,7 @@ servers:
           - 192.168.42.139
 #    - address: 10.1.1.26
 #      port: 22
-#      username: sonic
+#      username: username
 #      password: root
 #      hostname: node1_vm
 #      isvm: 1
@@ -35,7 +35,7 @@ servers:
 #          - lo
 #    - address: 10.1.1.27
 #      port: 22
-#      username: sonic
+#      username: username
 #      password: root
 #      hostname: node2_vm
 #      isvm: 2
