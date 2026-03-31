@@ -13,7 +13,7 @@ class ebpfTimesync:
 
 		self.terminal = []
 		self.continuing = True
-	
+
 	def __preprocess0__(self):
 		key1 = "servers"
 
@@ -33,6 +33,16 @@ class ebpfTimesync:
 			et.__mainprocess__(connect_info["password"])
 			time.sleep(0.1)
 		
+	def __preprocess01__(self):
+		key1 = "servers"
+
+		for connect_info in self.connect_info[key1]:
+			if connect_info.get("iscontainer") != None: continue
+			et = ebpf_terminal.ebpfTerminal(connect_info)
+			et.__preprocess__()
+			et.__mainprocess__(connect_info["password"])
+			time.sleep(0.1)
+
 	def __preprocess1__(self):
 		key1 = "servers"
 
@@ -72,8 +82,8 @@ class ebpfTimesync:
 		self.ebpf_python.__main__()
 
 ########################################################################
-	def __main__(self):
-		print("ebpf_time_sync process start")
+	def __pre_main__(self):
+		print("ebpf_time_sync first process start")
 		self.__preprocess0__()
 		self.__preprocess1__()
 
@@ -84,8 +94,19 @@ class ebpfTimesync:
 		self.continuing = False
 
 		thread.join()
+	
+	def __main__(self):
+		print("ebpf_time_sync process start")
+		self.__preprocess01__()
+		self.__preprocess1__()
 
-		
+		thread = th.Thread(target = self.__preprocess2__, args = ())
+		thread.start()
+
+		self.__mainprocess__()
+		self.continuing = False
+
+		thread.join()
 
 
 

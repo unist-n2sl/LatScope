@@ -157,10 +157,10 @@ class ebpfPreprocess:
             command3 = None
             
             if connect_info.get("isvm") == None:
-                command3 = "LatScope-Local/ebpf_program_vm ~/"
-#               command3 = "LatScope-Local/ebpf_program_host ~/"
+                command3 = "LatScope/ebpf_program_vm ~/"
+#               command3 = "LatScope/ebpf_program_host ~/"
             else:
-                command3 = "LatScope-Local/ebpf_program_vm ~/"
+                command3 = "LatScope/ebpf_program_vm ~/"
 
             command = command1 + " " + command2 + command3
             print(command)

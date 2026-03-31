@@ -108,6 +108,7 @@ class ebpfCode:
             BPF_RINGBUF_OUTPUT(event_ringbuf, (1 << 17));
             BPF_TABLE("hash", u8, u32, sampling_size, 1);
             BPF_TABLE("hash", u16, u8, sampling_port, 10);
+			BPF_TABLE("hash", u8, u8, filter_retrans, 1);
             BPF_HASH(h_pid, struct pid_info, struct flow_info);
             BPF_HASH(h_pid_ts, struct pid_info, u64);
             BPF_HASH(h_pid_seq, struct flow_info, u32);
@@ -230,6 +231,13 @@ class ebpfCode:
                 ssize = ssize + (size_ ? *size_ : 0);
                 h_sample_size.update(&flow_info, &ssize);
             }
+
+			static inline u8 should_filter_retrans(void) {
+				u8 key = 1;
+				u8 *val = filter_retrans.lookup(&key);
+				if (val) return *val;
+				return 0;
+			}
 
             static inline u8 is_event_occur(struct flow_info flow_info, u64 data_len) {
                 u64 sampling_size = get_sampling_size(flow_info);
@@ -479,7 +487,6 @@ class ebpfCode:
 
                 if (is_event_occur(flow_info, data_len_) && (check_port(flow_info.src_port) || check_port(flow_info.dst_port))) {
                     set_sampling_size(flow_info);
-                    bpf_trace_printk("#function_name#: %llu\n", data_len_);
                     event_occur(ctx, flow_info, data_len_, flow_info.evt_type, #BIG_ENDIAN#, *ts, 0, 0, 0);
                 }
 
@@ -541,7 +548,6 @@ class ebpfCode:
                 
                 if (is_event_occur(flow_info, data_len_) && (check_port(flow_info.src_port) || check_port(flow_info.dst_port))) {
                     set_sampling_size(flow_info);
-                    bpf_trace_printk("#function_name#: %llu\n, data_len_");
                     event_occur(ctx, flow_info, data_len_, flow_info.evt_type, #BIG_ENDIAN#, ts, 0, 0, 0);
                 }
 
@@ -559,7 +565,8 @@ class ebpfCode:
                 u32 seq = th->seq; seq = ntohl(seq);
                 u32 data_len = skb->len - 32; 
                 u64 prev_seq;
-                u64 data_len_ = 1111;
+//                u64 data_len_ = 1111;
+				u64 data_len_ = 0;
                 u64 ts = bpf_ktime_get_boot_ns();
                 u8 evt_type = #evt_type#;
                 u8 is_retrans = 0;
@@ -580,14 +587,18 @@ class ebpfCode:
                 if (!(start_seq_ = h_start_seq.lookup(&flow_info))) h_start_seq.update(&flow_info, &start_seq);
                 is_retrans = is_retrans2(flow_info, cur_seq, &prev_seq, ts);
             
-                if (!is_retrans)
+/*                if (!is_retrans)
                     data_len_ = get_data_len2(flow_info, cur_seq, prev_seq);
                 else if (is_retrans == 1) data_len_ = 0;
-                else if (is_retrans == 3) return 0;
+                else if (is_retrans == 3) return 0; */
+			
+				u8 filter_retrans = should_filter_retrans();
+				if (filter_retrans && is_retrans != 0) return 0;
+				
+				data_len_ = get_data_len2(flow_info, cur_seq, prev_seq);
 
                 if (is_event_occur(flow_info, data_len_) && (check_port(flow_info.src_port) || check_port(flow_info.dst_port))) {
                     set_sampling_size(flow_info);
-                    bpf_trace_printk("#function_name#: %d\n, data_len_");
                     event_occur(ctx, flow_info, data_len_, evt_type, #LITTLE_ENDIAN#, ts, (!start_seq_ ? start_seq : *start_seq_), cur_seq, is_retrans);
                 } 
 
@@ -667,7 +678,6 @@ class ebpfCode:
                 
                 if (is_event_occur(flow_info, data_len_) && (check_port(flow_info.src_port) || check_port(flow_info.dst_port)) && data_len_) {
                     set_sampling_size(flow_info);
-                    bpf_trace_printk("#function_name#: %d\n, data_len_");
                     event_occur(ctx, flow_info, start_data_len, data_len_, evt_type, #LITTLE_ENDIAN#, ts, 0);
                 } 
             
@@ -692,7 +702,8 @@ class ebpfCode:
                 u8 is_retrans = 0;
 
                 struct flow_info flow_info = {};
-                u64 start_data_len = 0, data_len_ = 1111, zero = 0;
+//                u64 start_data_len = 0, data_len_ = 1111, zero = 0;
+                u64 start_data_len = 0, data_len_ = 0, zero = 0;
                 u64 cur_send_bytes;
                 u64 ts = bpf_ktime_get_boot_ns();
                 
@@ -729,14 +740,18 @@ class ebpfCode:
                 if (!(start_seq_ = h_start_seq.lookup(&flow_info))) h_start_seq.update(&flow_info, &start_seq);
                 is_retrans = is_retrans2(flow_info, cur_seq, &prev_seq, ts);
 
-                if (!is_retrans)
+/*                if (!is_retrans)
                     data_len_ = get_data_len2(flow_info, cur_seq, prev_seq);
                 else if (is_retrans == 1) data_len_ = 0;
-                else if (is_retrans == 3) return 0;
+                else if (is_retrans == 3) return 0;*/
+				
+				u8 filter_retrans = should_filter_retrans();
+				if (filter_retrans && is_retrans != 0) return 0;
+				
+				data_len_ = get_data_len2(flow_info, cur_seq, prev_seq);
                 
                 if (is_event_occur(flow_info, data_len_) && (check_port(flow_info.src_port) || check_port(flow_info.dst_port))) {
                     set_sampling_size(flow_info);
-                    bpf_trace_printk("#function_name#: %d\n", data_len_);
                     event_occur(ctx, flow_info, data_len_, evt_type, #LITTLE_ENDIAN#, ts, (!start_seq_ ? start_seq : *start_seq_), cur_seq, is_retrans);
                 }
 
@@ -829,7 +844,6 @@ class ebpfCode:
                 
                 if (is_event_occur(flow_info, data_len_) && (check_port(flow_info.src_port) || check_port(flow_info.dst_port)) && data_len_) {
                     set_sampling_size(flow_info);
-                    bpf_trace_printk("#function_name#: %d\n", data_len_);
                     event_occur(ctx, flow_info, start_data_len, data_len_, evt_type, #LITTLE_ENDIAN#, bpf_ktime_get_boot_ns(), 0);
                 }
                 

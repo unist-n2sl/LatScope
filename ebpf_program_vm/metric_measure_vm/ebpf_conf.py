@@ -6,6 +6,7 @@ class ebpfConf:
 		self.parser.add_argument("--redis_host", required = True, help = "redis server address")
 		self.parser.add_argument("--redis_port", required = True, help = "redis server port")
 		self.parser.add_argument("--redis_key", required = True, help = "redis metadata key")
+		self.parser.add_argument("--filter_retrans", required = True, type = int, help = "filter retransmission packets or not")
 
 		self.args = self.parser.parse_args()
 

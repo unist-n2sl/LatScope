@@ -29,6 +29,7 @@ class ebpfPython:
         self.b = BPF(text = self.code, cflags = ["-DNUM_CPUS=%d" % multiprocessing.cpu_count()])
         self.t_sampling_size = self.b.get_table("sampling_size")
         self.t_sampling_port = self.b.get_table("sampling_port")
+        self.t_filter_retrans = self.b.get_table("filter_retrans")
         self.b["event_ringbuf"].open_ring_buffer(self.__event_ringbuf_callback__)
 
         self.func_name = ["sock_sendmsg", "tcp_v4_send_check", "ip_finish_output2", "dev_queue_xmit", "sock_recvmsg", "tcp_v4_rcv", "ip_local_deliver", "napi_gro_receive", "kernel_sendpage", "tcp_sendpage", "__netif_receive_skb_core", "virtqueue_add_outbuf"]
@@ -88,6 +89,7 @@ class ebpfPython:
     def __set_metadata__(self):
         key = 1
         self.t_sampling_size[ctypes.c_uint8(key)] = ctypes.c_uint32(self.sampling_size["size"])
+        self.t_filter_retrans[ctypes.c_uint8(1)] = ctypes.c_uint8(self.args.filter_retrans)
 
         for port in self.sampling_size["ports"]:
             self.t_sampling_port[ctypes.c_uint16(port)] = ctypes.c_uint8(1)

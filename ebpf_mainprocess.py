@@ -6,6 +6,7 @@ class ebpfMainprocess:
 		self.ebpf_conf = ebpf_conf
 		self.connect_info = self.ebpf_conf.connect_info
 		self.redis_info = self.ebpf_conf.redis_info
+		self.sampling_info = self.ebpf_conf.sampling_info
 
 		self.terminals = []
 		
@@ -24,7 +25,7 @@ class ebpfMainprocess:
 			else:
 				command = "sudo python3 ~/ebpf_program_vm/metric_measure_vm/ebpf_main.py "
 
-			command += "--redis_host " + self.redis_info["host"] + " --redis_port " + str(self.redis_info["port"]) + " --redis_key " + str(connect_info["metadata_key"])
+			command += "--redis_host " + self.redis_info["host"] + " --redis_port " + str(self.redis_info["port"]) + " --redis_key " + str(connect_info["metadata_key"]) + " --filter_retrans " + str(self.sampling_info["filter_retrans"])
 
 			print(command)
 

@@ -3,7 +3,7 @@
 gnuplot make_analyzer_delay
 #gnuplot make_analyzer_layer_delay
 gnuplot make_analyzer_all_delay
-gnuplot make_analyzer_h_layer_delay
+#gnuplot make_analyzer_h_layer_delay
 gnuplot make_analyzer_hh_layer_delay
 #gnuplot make_analyzer_send_layer_delay
 #gnuplot make_analyzer_recv_layer_delay
