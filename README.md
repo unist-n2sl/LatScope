@@ -141,6 +141,23 @@
 * OS: Ubuntu 22.04.5 LTS
 * Kernel: Linux 5.14.0
 
+## Workflow
+1. Run LatScope:
+```bash
+cd LatScope
+sudo python3 ebpf_main.py
+```
+2. Generate graph data:
+```bash
+cd LatScope/graph
+sudo python3 ebpf_graph.py
+```
+3. Draw graphs:
+```bash
+cd LatScope/graph/result
+./make.sh
+```
+
 ## Example
 * Result Example
 	* Result Example1 (LAN)
