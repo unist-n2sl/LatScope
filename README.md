@@ -112,6 +112,7 @@
 		| size | sampling rate (payload size) | 72400 (bytes) |
 		| interval | sampling rate (time interval) | 1 (sec) |
 		| ports | sampling port (port that interested) | 5000 |
+		| filter_retrans | filter retransmission packets or not | 1 |
 	* database\_info.yaml (Information for Database (Address, Port, Passwd etc..))
 
 		| variable | meaning | example |
@@ -136,6 +137,8 @@
 		| -------- | ------- | ------- |
 		| address | redis's address | 10.1.1.1 |
 		| port | redis's port | 5000 |
+	* time\_sync.yaml (Cycle of time synchronization)
+		| time_interval | 64 (s) |
 
 ## Environment
 * OS: Ubuntu 22.04.5 LTS
