@@ -139,7 +139,9 @@
 		| port | redis's port | 5000 |
 	* time\_sync.yaml (Cycle of time synchronization)
 
-		| time_interval | 64 (s) |
+		| variable | meaning | example |
+		| -------- | ------- | ------- |
+		| time_interval | interval | 64 (s) |
 
 ## Environment
 * OS: Ubuntu 22.04.5 LTS
