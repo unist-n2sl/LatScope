@@ -138,6 +138,7 @@
 		| address | redis's address | 10.1.1.1 |
 		| port | redis's port | 5000 |
 	* time\_sync.yaml (Cycle of time synchronization)
+
 		| time_interval | 64 (s) |
 
 ## Environment
